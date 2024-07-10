@@ -5,6 +5,9 @@ import { BlogModule } from './modules/blog/blog.module';
 import { ConfigModule } from '@nestjs/config';
 import { WeatherModule } from './modules/weather/weather.module';
 import config from './configs/config';
+import { UserModule } from './modules/user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
 
 console.log(`env: ${process.env.NODE_ENV}`); // 기동 시 환경 변수 출력
 
@@ -21,8 +24,21 @@ console.log(`env: ${process.env.NODE_ENV}`); // 기동 시 환경 변수 출력
       cache: true, // 캐시하기, ConfigService의 get() 함수를 사용할 때 캐시에서 먼저 불러오게 되므로 성능상의 이점이 있음.
       expandVariables: true, // 확장 변수 옵션 추가
     }),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      entities: [User],
+      synchronize: true,
+      logging: true,
+      dropSchema: false,
+    }),
     BlogModule,
     WeatherModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
