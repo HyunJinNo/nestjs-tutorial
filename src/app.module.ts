@@ -8,6 +8,7 @@ import config from './configs/config';
 import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import { AuthModule } from './modules/auth/auth.module';
 
 console.log(`env: ${process.env.NODE_ENV}`); // 기동 시 환경 변수 출력
 
@@ -39,6 +40,7 @@ console.log(`env: ${process.env.NODE_ENV}`); // 기동 시 환경 변수 출력
     BlogModule,
     WeatherModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

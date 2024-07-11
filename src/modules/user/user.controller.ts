@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from 'src/entities/user.entity';
+import { CreateUserDto, UpdateUserDto } from './user.dto';
 
 @Controller('user') // 컨트롤러 설정 데코레이터
 export class UserController {
@@ -16,8 +16,16 @@ export class UserController {
 
   // 유저 생성
   @Post('/create')
-  createUser(@Body() user: User) {
+  createUser(@Body() user: CreateUserDto) {
     return this.userService.createUser(user);
+  }
+
+  // 모든 유저 찾기
+  @Get('/getUsers')
+  async getUsers() {
+    const users = await this.userService.getUsers();
+    console.log(users);
+    return users;
   }
 
   // 한 명의 유저 찾기
@@ -30,7 +38,7 @@ export class UserController {
 
   // 유저 정보 업데이트
   @Put('/update/:email')
-  updateUser(@Param('email') email: string, @Body() user: User) {
+  updateUser(@Param('email') email: string, @Body() user: UpdateUserDto) {
     console.log(user);
     return this.userService.updateUser(email, user);
   }
