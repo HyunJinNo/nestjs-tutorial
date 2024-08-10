@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { AuthGuard } from '@nestjs/passport';
 
 // Injectable이 있으니 프로바이더
 // CanActivate 인터페이스 구현
@@ -37,5 +38,26 @@ export class LoginGuard implements CanActivate {
     // 유저 정보가 있으면 request에 user 정보를 추가하고 true 반환
     request.user = user;
     return true;
+  }
+}
+
+// AuthGuard 상속
+@Injectable()
+export class LocalAuthGuard extends AuthGuard('local') {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const result = (await super.canActivate(context)) as boolean;
+
+    // 로컬 스트래티지 실행
+    const request = context.switchToHttp().getRequest();
+    await super.logIn(request); // 세션 저장
+    return result;
+  }
+}
+
+@Injectable()
+export class AuthenticatedGuard implements CanActivate {
+  canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest();
+    return request.isAuthenticated(); // 세션에서 정보를 읽어서 인증 확인
   }
 }
