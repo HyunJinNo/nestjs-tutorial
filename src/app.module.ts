@@ -9,6 +9,8 @@ import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { AuthModule } from './modules/auth/auth.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 console.log(`env: ${process.env.NODE_ENV}`); // 기동 시 환경 변수 출력
 
@@ -36,6 +38,11 @@ console.log(`env: ${process.env.NODE_ENV}`); // 기동 시 환경 변수 출력
       synchronize: true,
       logging: true,
       dropSchema: false,
+    }),
+    ServeStaticModule.forRoot({
+      // 초기화 함수 실행
+      rootPath: join(__dirname, '..', 'uploads'), // 실제 파일이 있는 디렉토리 경로
+      serveRoot: '/uploads', // url 뒤에 붙을 경로를 지정
     }),
     BlogModule,
     WeatherModule,

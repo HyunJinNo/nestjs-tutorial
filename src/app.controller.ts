@@ -56,6 +56,6 @@ export class AppController {
     // console.log(file.buffer.toString('utf-8'));
 
     console.log(file);
-    return 'File Upload';
+    return `${file.originalname} File Uploaded check http://localhost:3000/uploads/${file.filename}`;
   }
 }

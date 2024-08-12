@@ -5,12 +5,14 @@ import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 // Nest.js를 실행시키는 함수
 // Nest.js에서는 진입점을 bootstrap()으로 이름 짓는 것이 관례이다.
 async function bootstrap() {
   // NestFactory를 사용해서 NestApplication 객체 생성
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // 전역 파이프에 validationPipe 객체 추가
   app.useGlobalPipes(new ValidationPipe());
@@ -34,6 +36,9 @@ async function bootstrap() {
   // passport 초기화 및 세션 저장소 초기화
   app.use(passport.initialize());
   app.use(passport.session());
+
+  // 정적 파일 경로 지정
+  app.useStaticAssets(join(__dirname, '..', 'static'));
 
   // 3000번 포트로 서버 기동
   await app.listen(configService.get('SERVER_PORT'));
