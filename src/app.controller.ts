@@ -1,6 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { ConfigService } from '@nestjs/config';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller() // 컨트롤러 데코레이터
 export class AppController {
@@ -37,5 +44,13 @@ export class AppController {
   @Get('server-url')
   getServerUrl(): string {
     return this.configService.get('SERVER_URL'); // 확장 변숫값 읽기
+  }
+
+  @Post('file-upload') // POST 메서드로 localhost:3000/file-upload 호출 시 동작
+  @UseInterceptors(FileInterceptor('file')) // 파일 인터셉터
+  fileUpload(@UploadedFile() file: Express.Multer.File) {
+    // 인터셉터에서 준 파일을 받음
+    console.log(file.buffer.toString('utf-8')); // 텍스ㅌ 파일 내용 출력
+    return 'File Upload';
   }
 }
