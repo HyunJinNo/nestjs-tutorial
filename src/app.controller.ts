@@ -8,6 +8,7 @@ import {
 import { AppService } from './app.service';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from './multer.option';
 
 @Controller() // 컨트롤러 데코레이터
 export class AppController {
@@ -47,10 +48,14 @@ export class AppController {
   }
 
   @Post('file-upload') // POST 메서드로 localhost:3000/file-upload 호출 시 동작
-  @UseInterceptors(FileInterceptor('file')) // 파일 인터셉터
+  @UseInterceptors(FileInterceptor('file', multerOptions)) // 파일 인터셉터
+  // 인터셉터에서 준 파일을 받음
   fileUpload(@UploadedFile() file: Express.Multer.File) {
-    // 인터셉터에서 준 파일을 받음
-    console.log(file.buffer.toString('utf-8')); // 텍스ㅌ 파일 내용 출력
+    // 텍스트 파일 내용 출력
+    // diskStorage()는 buffer 속성을 가지고 있지 않으므로 제거
+    // console.log(file.buffer.toString('utf-8'));
+
+    console.log(file);
     return 'File Upload';
   }
 }
