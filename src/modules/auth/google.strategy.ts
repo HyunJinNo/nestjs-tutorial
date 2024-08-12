@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy } from 'passport-google-oauth20';
 import { UserService } from '../user/user.service';
+import { User } from 'src/entities/user.entity';
 
 // PassportStrategy(Strategy) 상속
 @Injectable()
@@ -24,7 +25,14 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
     const providerId = id;
     const email = emails[0].value;
 
-    console.log(providerId, email, name.familyName, name.givenName);
-    return profile;
+    // 유저 정보 저장 또는 가져오기
+    const user: User = await this.userService.findByEmailOrSave(
+      email,
+      name.familyName + name.givenName,
+      providerId,
+    );
+
+    // 유저 정보 반환
+    return user;
   }
 }

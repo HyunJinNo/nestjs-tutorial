@@ -70,7 +70,8 @@ export class GoogleAuthGuard extends AuthGuard('google') {
     const result = (await super.canActivate(context)) as boolean;
 
     // context에서 request 객체를 가져온다.
-    //const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest();
+    await super.logIn(request); // 세션 적용
 
     return result;
   }
