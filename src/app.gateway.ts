@@ -23,3 +23,20 @@ export class ChatGateway {
     socket.broadcast.emit('message', `${nickname}: ${message}`);
   }
 }
+
+@WebSocketGateway({ namespace: 'room' }) // room 네임스페이스를 사용하는 게이트웨이
+export class RoomGateway {
+  rooms = [];
+
+  // 서버 인스턴스 접근을 위한 변수 선언
+  @WebSocketServer() server: Server;
+
+  @SubscribeMessage('createRoom') // createRoom 핸들러 메서드
+  handleMessage(@MessageBody() data: any) {
+    // 소켓없이 데이터만 받음.
+
+    const { room, nickname } = data;
+    this.rooms.push(room); // 채팅방 정보를 받아서 추가
+    this.server.emit('rooms', this.rooms); // rooms 이벤트로 채팅방 리스트 전송
+  }
+}

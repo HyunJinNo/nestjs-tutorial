@@ -6,14 +6,25 @@
     <title>NestJS Chat</title>
   </head>
   <body>
-    <!-- 채팅 영역 -->
     <h2>NestJS Chat</h2>
+
+    <!-- 채팅방 목록 -->
+    <div>
+      <h2>채팅방 목록</h2>
+      <ul id="rooms"></ul>
+    </div>
+
+    <!-- 채팅 영역 -->
     <div id="chat"></div>
 
     <!-- 글 입력 영역 -->
     <input type="text" id="message" place="메세지를 입력해 주세요." />
+
     <!-- [전송 버튼]-->
     <button onClick="sendMessage()">전송</button>
+
+    <!-- [방 만들기] 버튼 -->
+    <button onClick="createRoom()">방 만들기</button>
 
     <!-- jquery 로드 -->
     <script src="https://code.jquery.com/jquery-3.6.1.slim.js"></script>

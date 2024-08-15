@@ -11,7 +11,7 @@ import { User } from './entities/user.entity';
 import { AuthModule } from './modules/auth/auth.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { ChatGateway } from './app.gateway';
+import { ChatGateway, RoomGateway } from './app.gateway';
 
 console.log(`env: ${process.env.NODE_ENV}`); // 기동 시 환경 변수 출력
 
@@ -51,6 +51,6 @@ console.log(`env: ${process.env.NODE_ENV}`); // 기동 시 환경 변수 출력
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ChatGateway],
+  providers: [AppService, ChatGateway, RoomGateway],
 })
 export class AppModule {}
