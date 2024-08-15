@@ -21,25 +21,7 @@
     <!-- socket.io 클라이언트 로드 -->
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 
-    <script>
-      // socket.io 인스턴스 생성
-      const socket = io('http://localhost:3000');
-
-      // [전송] 버튼 클릭 시 입력된 글을 message 이벤트로 보냄
-      function sendMessage() {
-        const message = $('#message').val();
-        socket.emit('message', message);
-      }
-
-      // 서버 접속을 확인을 위한 이벤트
-      socket.on('content', () => {
-        console.log('connected');
-      });
-
-      // 서버에서 message 이벤트 발생 시 처리
-      socket.on('message', (message) => {
-        $('#chat').append(`<div>${message}</div>`);
-      });
-    </script>
+    <!-- 자바스크립트 파일 분리 -->
+    <script src="http://localhost:3000/script.js"></script>
   </body>
 </html>
