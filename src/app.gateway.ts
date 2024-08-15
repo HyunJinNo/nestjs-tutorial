@@ -56,4 +56,18 @@ export class RoomGateway {
     });
     socket.join(room); // 새로운 방에 입장합니다.
   }
+
+  @SubscribeMessage('message') // RoomGateway로 message 이벤트가 오면 처리
+  handleMessageToRoom(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data: any,
+  ) {
+    const { message, nickname, room } = data;
+    console.log(data);
+
+    // 나 이외의 사람들에게 데이터 전송
+    socket.broadcast.to(room).emit('message', {
+      message: `${nickname}: ${message}`,
+    });
+  }
 }
