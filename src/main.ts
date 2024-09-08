@@ -8,8 +8,8 @@ import * as passport from 'passport';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 
-// Nest.js를 실행시키는 함수
-// Nest.js에서는 진입점을 bootstrap()으로 이름 짓는 것이 관례이다.
+// NestJS를 실행시키는 함수
+// NestJS에서는 진입점을 bootstrap()으로 이름 짓는 것이 관례이다.
 async function bootstrap() {
   // NestFactory를 사용해서 NestApplication 객체 생성
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -29,7 +29,7 @@ async function bootstrap() {
       secret: 'very-important-secret', // 세션 암호화에 사용되는 키
       resave: false, // 세션을 항상 저장할 지 여부
       saveUninitialized: false, // 세션이 저장되기 전에는 초기화되지 않은 상태로 세션을 미리 만들어 저장
-      cookie: { maxAge: 1000 * 60 * 60 }, // 쿠키 유효기간: 1시간
+      cookie: { maxAge: 1000 * 60 * 60, httpOnly: true }, // 쿠키 유효기간: 1시간
     }),
   );
 
